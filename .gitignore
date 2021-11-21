@@ -1,0 +1,9 @@
+# Visual Studio files
+**.vs
+# .NET build files
+**bin
+**obj
+# C++ build files
+**build
+# Build timestamp
+**TIMESTAMP
