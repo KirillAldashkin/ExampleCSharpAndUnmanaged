@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Remove="cpplib\TIMESTAMP" />
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="cpplib\TIMESTAMP" />
 		<None Remove="cpplib\build\**" />
 		<CppLibOut Include="cpplib/build/libcpplib.*" />
 		<CppLibIn Include="cpplib/*.cpp" />
 		<CppLibIn Include="cpplib/CMakeLists.txt" />
 	</ItemGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Inputs="%(CppLibIn.Identity)" Outputs="cpplib/TIMESTAMP">
-        <Message Importance="high" Text="## Building C++ library..." />
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Inputs="%(CppLibIn.Identity)" Outputs="cpplib/TIMESTAMP">
+		<Message Importance="high" Text="## Building C++ library..." />
 		
-        <!-- Clean cache (re-create 'build' directory) -->
+		<!-- Clean cache (re-create 'build' directory) -->
 		<Message Importance="high" Text="#### Clean 'build' directory..." />
-        <RemoveDir Directories="cpplib/build" />
-        <MakeDir Directories="cpplib/build" />
+		<RemoveDir Directories="cpplib/build" />
+		<MakeDir Directories="cpplib/build" />
 		
-        <!-- Build library ('cmake ..' and 'cmake build .') -->
+		<!-- Build library ('cmake ..' and 'cmake build .') -->
 		<Message Importance="high" Text="#### Building library (cmake ..)..." />
 		<Exec WorkingDirectory="cpplib/build" Command="cmake -G &quot;MinGW Makefiles&quot; .." />
-	    <Message Importance="high" Text="#### Building library (cmake --build .)..." />
+		<Message Importance="high" Text="#### Building library (cmake --build .)..." />
 		<Exec WorkingDirectory="cpplib/build" Command="cmake --build ." />
 		
 		<!-- Create TIMESTAMP -->
@@ -32,8 +32,8 @@
 		<WriteLinesToFile File="cpplib/TIMESTAMP" Lines="timestamp" />
 		
 		<Message Importance="high" Text="## Done!" />
-    </Target>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	</Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Message Importance="high" Text="## Copying C++ library..." />
 		<Copy SourceFiles="%(CppLibOut.Identity)" DestinationFolder="bin/$(Configuration)/$(TargetFramework)" />
 		<Message Importance="high" Text="## Done!" />
