@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- .NET project properties -->
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
@@ -6,12 +7,16 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
+		<!-- Do not show TIMESTAMP file and build folder in Visual Studio -->
 		<None Remove="cpplib\TIMESTAMP" />
 		<None Remove="cpplib\build\**" />
+		<!-- Output libraries -->
 		<CppLibOut Include="cpplib/build/libcpplib.*" />
+		<!-- Inputs of C++ library (for incremental build) -->
 		<CppLibIn Include="cpplib/*.cpp" />
 		<CppLibIn Include="cpplib/CMakeLists.txt" />
 	</ItemGroup>
+	<!-- Target to build C++ library -->
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Inputs="%(CppLibIn.Identity)" Outputs="cpplib/TIMESTAMP">
 		<Message Importance="high" Text="## Building C++ library..." />
 		
@@ -22,7 +27,8 @@
 		
 		<!-- Build library ('cmake ..' and 'cmake build .') -->
 		<Message Importance="high" Text="#### Building library (cmake ..)..." />
-		<Exec WorkingDirectory="cpplib/build" Command="cmake -G &quot;MinGW Makefiles&quot; .." />
+		<Exec WorkingDirectory="cpplib/build" Command="cmake -G &quot;MinGW Makefiles&quot; .." Condition=" '$(OS)' == 'Windows_NT' "/>
+		<Exec WorkingDirectory="cpplib/build" Command="cmake -G &quot;Unix Makefiles&quot; .." Condition=" '$(OS)' != 'Windows_NT' "/>
 		<Message Importance="high" Text="#### Building library (cmake --build .)..." />
 		<Exec WorkingDirectory="cpplib/build" Command="cmake --build ." />
 		
@@ -33,6 +39,7 @@
 		
 		<Message Importance="high" Text="## Done!" />
 	</Target>
+	<!-- Target to copy C++ library -->
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Message Importance="high" Text="## Copying C++ library..." />
 		<Copy SourceFiles="%(CppLibOut.Identity)" DestinationFolder="bin/$(Configuration)/$(TargetFramework)" />
