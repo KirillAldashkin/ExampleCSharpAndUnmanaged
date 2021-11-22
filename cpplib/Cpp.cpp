@@ -1,7 +1,7 @@
 ﻿#if _WIN32
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #else
-#define DLL_EXPORT
+#define DLL_EXPORT __attribute__((visibility("default")))
 #endif
 #include <iostream>
 #include <cmath>
