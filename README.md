@@ -11,10 +11,6 @@ Shows how:
 2) [CMake 3.8](https://cmake.org/download/) or later
 3) GNU C++ compiler
 
-*NOTE* This project should be cross-platfrom, but I tested it only on Windows. Please 
-[report](https://github.com/KirillAldashkin/ExampleCSharpAndUnmanaged/issues/new) 
-about any building issues.
-
 **Instructions:**
 1) `cd` to repository folder
 2) `dotnet build` to build or `dotnet run` to run. The build of CMake projects will be started automatically.
