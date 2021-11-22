@@ -19,7 +19,8 @@ string DllExt()
     if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return ".dylib";
     throw new Exception($"OS is not supported: {Environment.OSVersion.VersionString}");
 }
-IntPtr ResolveLib(string name, Assembly asm, DllImportSearchPath? path) => NativeLibrary.Load(name + DllExt());
+string runPath() => AppDomain.CurrentDomain.BaseDirectory;
+IntPtr ResolveLib(string name, Assembly asm, DllImportSearchPath? path) => NativeLibrary.Load(runPath() + name + DllExt());
 
 // 2) Register library resolver function
 NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), ResolveLib);
