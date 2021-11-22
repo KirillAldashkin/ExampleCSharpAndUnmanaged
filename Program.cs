@@ -12,7 +12,14 @@ static extern unsafe void squareRoot(double* val);
 //   name - Name of requested library (defined in 'DllImport' attribute)
 //   asm  - .NET assembly which requested library
 //   path - some options to search libraries
-IntPtr ResolveLib(string name, Assembly asm, DllImportSearchPath? path) => NativeLibrary.Load(name);
+string DllExt()
+{
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return ".dll";
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return ".so";
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return ".dylib";
+    throw new Exception($"OS is not supported: {Environment.OSVersion.VersionString}");
+}
+IntPtr ResolveLib(string name, Assembly asm, DllImportSearchPath? path) => NativeLibrary.Load(name + DllExt());
 
 // 2) Register library resolver function
 NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), ResolveLib);
