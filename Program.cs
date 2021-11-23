@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 
 delegate double ConverterDelegate(double p);
+delegate void FunctionReturn();
 
 partial class Program
 {
@@ -10,7 +11,9 @@ partial class Program
     [DllImport("libcpplib")]
     static extern unsafe void squareRoot(double* val);
     [DllImport("libcpplib")]
-    static extern unsafe void sumFunc(double from, double to, double step, ConverterDelegate func);
+    static extern double sumFunc(double from, double to, double step, ConverterDelegate func);
+    [DllImport("libcpplib")]
+    static extern FunctionReturn getFunction(int value);
 
     static void Main()
     {
@@ -19,5 +22,6 @@ partial class Program
         // 3) Use exteral functions (see "Program.Examples.cs" to find methods below)
         PointersExample();
         DelegatesToUnmanagedExample();
+        UnmanagedToDelegatesExample();
     }
 }

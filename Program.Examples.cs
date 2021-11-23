@@ -14,24 +14,36 @@
     private static void DelegatesToUnmanagedExample()
     {
         // C# can convert managed delegates or lambdas to native function pointers
-        Console.WriteLine("[C#] Before \'sumFunc\' (using square function)");
-        sumFunc(1, 6, 1, d =>
+        Console.WriteLine("[C#] \'sumFunc\': using square function");
+        var summ = sumFunc(1, 6, 1, d =>
         {
             Console.WriteLine($"[C#] given: {d} - to return {d * d}");
             return d * d;
         });
-        Console.WriteLine("[C#] After \'sumFunc\' (using square function)\n");
+        Console.WriteLine($"[C#] Total sum: {summ}");
 
-        // Refering to outer variables is also supported
-        for(double k = 0; k < 3; k++)
+        // Lambdas with context is also supported
+        for (double k = 0; k < 3; k++)
         {
-            Console.WriteLine($"[C#] Before \'sumFunc\' (using multiply-{k} function)");
-            sumFunc(1, 6, 1, d =>
+            Console.WriteLine($"\n[C#] \'sumFunc\': using multiply-{k} function");
+            summ = sumFunc(1, 6, 1, d =>
             {
                 Console.WriteLine($"[C#] given: {d} - to return {d * k}");
                 return d * k;
             });
-            Console.WriteLine($"[C#] After \'sumFunc\' (using multiply-{k} function)\n");
+            Console.WriteLine($"[C#] Total sum: {summ}");
+        }
+        Console.WriteLine();
+    }
+
+    private static void UnmanagedToDelegatesExample()
+    {
+        // C# can convert native function pointers to delegates
+        var methods = Enumerable.Range(1, 20).Select(index => (index, method: getFunction(index)));
+        foreach (var call in methods)
+        {
+            Console.Write($"[C#] {call.index}:");
+            call.method();
         }
     }
 }
