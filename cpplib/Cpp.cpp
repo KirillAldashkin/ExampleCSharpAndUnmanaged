@@ -26,7 +26,7 @@ DLL_EXPORT double sumFunc(double from, double to, double step, double (*convFunc
 	return ret;
 }
 
-DLL_EXPORT void extSort(void* start, int length, int _size, int (*comp)(void*, void*))
+DLL_EXPORT void extSort(void* start, int length, int _size, int (*comp)(const void*, const void*))
 {
 	qsort(start, length, _size, comp);
 }
