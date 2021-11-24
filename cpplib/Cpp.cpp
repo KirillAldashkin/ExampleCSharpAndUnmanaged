@@ -4,6 +4,7 @@
 #define DLL_EXPORT extern "C" __attribute__((visibility("default")))
 #endif
 #include <iostream>
+#include <cstdlib>
 #include <cmath>
 
 using namespace std;
@@ -23,6 +24,11 @@ DLL_EXPORT double sumFunc(double from, double to, double step, double (*convFunc
 		from += step;
 	}
 	return ret;
+}
+
+DLL_EXPORT void extSort(void* start, int length, int _size, int (*comp)(void*, void*))
+{
+	qsort(start, length, _size, comp);
 }
 
 void fizzBuzz() { cout << " [C++] FizzBuzz" << endl; }

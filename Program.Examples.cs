@@ -45,5 +45,17 @@
             Console.Write($"[C#] {call.index}:");
             call.method();
         }
+        Console.WriteLine();
+    }
+
+    private static void SortExample()
+    {
+        // Using std::qsort from unmanaged code
+        int[] data = new int[20];
+        Random rnd = new();
+        for (int i = 0; i < data.Length; i++) data[i] = rnd.Next(-1000, 1001);
+        Console.WriteLine($"Before unmanaged sort: {string.Join(' ', data)}");
+        StdSort<int>(data);
+        Console.WriteLine($"After unmanaged sort: {string.Join(' ', data)}");
     }
 }

@@ -1,19 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
+unsafe delegate int ComparerDelegate(void* l, void* r);
+unsafe delegate int ComparerDelegateRef(object l, object r);
 delegate double ConverterDelegate(double p);
 delegate void FunctionReturn();
 
 partial class Program
 {
     // 1) Define external functions
-    // 'unsafe' keyword is used to allow pointers
-    [DllImport("libcpplib")]
-    static extern unsafe void squareRoot(double* val);
-    [DllImport("libcpplib")]
-    static extern double sumFunc(double from, double to, double step, ConverterDelegate func);
-    [DllImport("libcpplib")]
-    static extern FunctionReturn getFunction(int value);
+    // see "Program.Externs.cs" to find definitions
 
     static void Main()
     {
@@ -23,5 +19,6 @@ partial class Program
         PointersExample();
         DelegatesToUnmanagedExample();
         UnmanagedToDelegatesExample();
+        SortExample();
     }
 }
